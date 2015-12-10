@@ -6,8 +6,8 @@ HW44
 2015-13-08
  */
 
-public class Hexadecimal {
-	
+public class Hexadecimal implements Comparable{
+	String s;
     private int _decNum;
     private String _hexNum;
 	
@@ -87,7 +87,7 @@ public static String decToHexRecHelp (int n, String count) {
 	}
 }
 
-public static String decToHexRec(int n) {
+public static String decToHexRec(int n){
 	return decToHexRecHelp(n,"");
 }
 
@@ -104,7 +104,8 @@ public static String hexToDec(String s) {
 
 
 
-public static String hexToDecRecHelp(String s, int count) {
+public static String hexToDecRecHelp(String s, int count){
+
 	 if (s.length() == 0) {
 		 return "" + count;
 	 }
@@ -113,9 +114,12 @@ public static String hexToDecRecHelp(String s, int count) {
 		 int temp = s.length() - 1;
 			int y = HEXDIGITS.indexOf(s.substring(0,1));
 			count = count + y * (int)(Math.pow(16,temp));
+
 			return hexToDecRecHelp(s.substring(1), count);
+
 	 }
 	 
+ 
 	
 }
 
@@ -140,26 +144,109 @@ public boolean equals( Object other ) {
   negative integer if this<input, positive integer otherwise
   =============================================*/
 public int compareTo( Object other ) {
-	Hexadecimal s = (Hexadecimal)other;
-	if (this._decNum == (s._decNum)) {
-		return 0;
+	try {
+		
+		if (other instanceof Hexadecimal) {
+		
+				Hexadecimal s = (Hexadecimal)other;
+				if (this._decNum == (s._decNum)) {
+					return 0;
+				}
+				if (this._decNum < (s._decNum)) {
+					return -1;
+				}
+				else {
+					return 1;
+				}
+				
+		}
+		
+		if (other instanceof Rational) {
+			Rational temp = (Rational)other;
+			double temp_a = temp.floatValue();
+			if((this._decNum == (int)temp_a)) {
+			return 0;
+			}
+			else if(this._decNum > (int)temp_a){
+			return 1;
+			} 
+			else {
+			return -1;
+			}
+		}
+		
+		else{
+			Binary s = (Binary)other;
+			if (this._decNum == (s.get_decNum())) {
+				return 0;
+			}
+			if (this._decNum < (s.get_decNum())) {
+				return -1;
+			}
+			else {
+				return 1;
+			}
+			
+		}
+
+
 	}
-	if (this._decNum < (s._decNum)) {
-		return -1;
+	
+	catch (NullPointerException e) {
+		
+		System.out.println("ERROR, NO USING NULL THINGIES OKKK???");
+		throw new NullPointerException("Null pointer");
 	}
-	else {
-		return 1;
+	
+	catch (ClassCastException e) {
+		System.out.println("Wrong casting");
+		throw new ClassCastException("class casting");
 	}
+	
 
 }
 
+
+
+public int get_decNum() {
+	return _decNum;
+}
+
+
+public void set_decNum(int _decNum) {
+	this._decNum = _decNum;
+}
+
+
+public String get_hexNum() {
+	return _hexNum;
+}
+
+
+public void set_hexNum(String _hexNum) {
+	this._hexNum = _hexNum;
+}
+
+
+public static String getHexdigits() {
+	return HEXDIGITS;
+}
 
 
 public static String hexToDecRec(String s) {
-	return hexToDecRecHelp(s,0);
+	try {
+		return hexToDecRecHelp(s,0);
+
+	}
+	
+	catch (NullPointerException e) {
+		
+		return "ERROR, NO USING NULL THINGIES OKKK???";
+	}
 }
-public static void main (String[] args) {
-	System.out.println(hexToDecRec("2EF"));
+public static void main (String[] args){
+	Hexadecimal ha = new Hexadecimal();
+	
 	System.out.println(highPower(70000));
 
 	System.out.println(decToHex(752));
@@ -169,11 +256,21 @@ public static void main (String[] args) {
 	System.out.println(decToHexRec(751));
 	
 	Hexadecimal h = new Hexadecimal(30);
-	Hexadecimal e = new Hexadecimal("2E");
+	Hexadecimal e = new Hexadecimal("1E");
 
 	System.out.println(h);
 	System.out.println(h.compareTo(e));
 	System.out.println(h.equals(e));
+	
+	
+	Hexadecimal dog = new Hexadecimal(8);
+	Binary cat = new Binary ("10000");
+	System.out.println("Comparing hex to bin");
+	System.out.println(dog.compareTo(cat));
+	Rational mouse = new Rational (8,1);
+	System.out.println("comparing hex to rational");
+	System.out.println(dog.compareTo(mouse));
+	
 
 
 

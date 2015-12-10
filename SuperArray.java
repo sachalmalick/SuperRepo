@@ -1,22 +1,20 @@
 
-public class SuperArray implements ListInt, Comparable  {
+public class SuperArray  {
  
     //~~~~~INSTANCE VARS~~~~~
     //underlying container, or "core" of this data structure:
-    private int[] _data;
+    private Comparable[] _data;
 
     //position of last meaningful value
     private int _lastPos;
 
     //size of this instance of SuperArray
     private int _size;
-
-		
-    //~~~~~METHODS~~~~~
+  //~~~~~METHODS~~~~~
     //default constructor – initializes 10-item array
     public SuperArray() 
     { 
-	_data = new int[10];
+	_data = new Comparable[10];
 	_lastPos = -1; //flag to indicate no lastpos yet
 	_size = 0;	
     }
@@ -41,7 +39,7 @@ public class SuperArray implements ListInt, Comparable  {
     //double capacity of this SuperArray
     private void expand() 
     { 
-	int[] temp = new int[ _data.length * 2 ];
+	Comparable[] temp = new Comparable[ _data.length * 2 ];
 	for( int i = 0; i < _data.length; i++ )
 	    temp[i] = _data[i];
 	_data = temp;
@@ -49,13 +47,13 @@ public class SuperArray implements ListInt, Comparable  {
 
 		
     //accessor -- return value at specified index
-    public int get( int index ) { return _data[index]; }
+    public Comparable get( int index ) { return _data[index]; }
 
 		
     //mutator -- set value at index to newVal, 
     //           return old value at index
-    public int set( int index, int newVal ) { 
-	int temp = _data[index];
+    public Comparable set( int index, Comparable newVal ) { 
+	Comparable temp = _data[index];
 	if(index <= _lastPos){
 	    _data[index] = newVal;
 	    return temp;
@@ -68,7 +66,7 @@ public class SuperArray implements ListInt, Comparable  {
 
     // ~~~~~~~~~~~~~~ PHASE II ~~~~~~~~~~~~~~
     //adds an item after the last item
-    public void add( int newVal ) { 
+    public void add( Comparable newVal ) { 
 	if(_size == _data.length){
 	    expand();
 	    _data[_size] = newVal;
@@ -85,7 +83,7 @@ public class SuperArray implements ListInt, Comparable  {
 
     //inserts an item at index
     //shifts existing elements to the right
-    public void add( int index, int newVal ) { 
+    public void add( int index, Comparable newVal ) { 
 	if(index <= _size){//The if of chris's stupidity ~Chris. Checks if the insertion index is after lastpos. If it is, it shouldn't work
 	    if(_size == _data.length){
 		expand();
@@ -119,18 +117,62 @@ public class SuperArray implements ListInt, Comparable  {
     	
     	return this._size;
     }
+    
+	public static int linSearch(SuperArray a, Comparable target) {
+		
+		for (int i = 0; i < a._data.length; i++) {
+			if (a._data[i] == target) {
+				return i;
+			}
+		}
+		
+		return -1;
+		}
+	
+	
+	
+	
+    public static boolean isSorted (SuperArray a) {
+    	for (int i = 0; i < a._data.length; i++) {
+    		if (a._data[i].compareTo(a._data[i+1]) == -1) {
+    			
+    		}
+    		
+    		else {
+    			return false;
+    		}
+    	}
+    	
+    	return true;
+    }
 
     //main method for testing
     public static void main( String[] args ) 
     {
-	ListInt s = new SuperArray();
-	SuperArray curtis = (SuperArray)s;
+	SuperArray curtis = new SuperArray();
 	System.out.println("Printing empty SuperArray curtis...");
 	System.out.println(curtis);
 
 	for( int i = 0; i < curtis._data.length; i++ ) {
-	    curtis.add(i*2);
+		int temp = (int)(Math.random() * 3);
+		if (temp == 0) {
+			Binary a = new Binary(i);
+			curtis.add(i,a);	}
+	
+		else if (temp == 1) {
+			Hexadecimal a = new Hexadecimal(i);
+			curtis.add(i,a);
 
+
+	}
+	else  {
+		
+		Rational r = new Rational(i,i+7);
+		curtis.add(i,r);
+
+
+
+	}
 	}
 
 	System.out.println("Printing populated SuperArray curtis...");
@@ -147,10 +189,10 @@ public class SuperArray implements ListInt, Comparable  {
 	System.out.println(curtis);
 
 
-	ListInt mayfield = new SuperArray();
+	SuperArray mayfield = new SuperArray();
 	System.out.println("Printing empty SuperArray mayfield...");
 	System.out.println(mayfield);
-
+/*
 	  mayfield.add(5);
 	  mayfield.add(4);
 	  mayfield.add(3);
@@ -179,13 +221,17 @@ public class SuperArray implements ListInt, Comparable  {
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	//*****INSERT ANY ADDITIONAL TEST CALLS HERE*****
+	
+	
+	System.out.println("_____TEST CALLS FOR LINSEARCH AND OTHERS_____");
+	
+	Binary as = new Binary("101");
+	curtis._data[0] = as;
+	System.out.println(linSearch(curtis,as));
+	System.out.println(isSorted(curtis));
+	
 
     }//end main
 
-
-	@Override
-	public int compareTo(Object o) {
-		return 0;
-	}
 		
 }//end class

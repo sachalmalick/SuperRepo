@@ -5,7 +5,7 @@ APCS1 pd5
 HW43
 2015-12-08
  */
-public class Binary {
+public class Binary implements Comparable{
 
     private int _decNum;
     private String _binNum;
@@ -213,22 +213,109 @@ public class Binary {
       negative integer if this<input, positive integer otherwise
       =============================================*/
     public int compareTo( Object other ) {
-    	Binary s = (Binary)other;
-    	if (this._decNum == (s._decNum)) {
-    		return 0;
+    	try {
+    		
+    		if (other instanceof Hexadecimal) {
+    		
+    				Hexadecimal s = (Hexadecimal)other;
+    				if (this._decNum == (s.get_decNum())) {
+    					return 0;
+    				}
+    				if (this._decNum < (s.get_decNum())) {
+    					return -1;
+    				}
+    				else {
+    					return 1;
+    				}
+    				
+    		}
+    		
+    		if (other instanceof Rational) {
+    			Rational temp = (Rational)other;
+    			double temp_a = temp.floatValue();
+    			if((this._decNum == (int)temp_a)) {
+    			return 0;
+    			}
+    			else if(this._decNum > (int)temp_a){
+    			return 1;
+    			} 
+    			else {
+    			return -1;
+    			}
+    		}
+    		
+    		else{
+    			Binary s = (Binary)other;
+    			if (this._decNum == (s.get_decNum())) {
+    				return 0;
+    			}
+    			if (this._decNum < (s.get_decNum())) {
+    				return -1;
+    			}
+    			else {
+    				return 1;
+    			}
+    			
+    		}
+
+
     	}
-    	if (this._decNum < (s._decNum)) {
-    		return -1;
+    	
+    	catch (NullPointerException e) {
+    		
+    		System.out.println("ERROR, NO USING NULL THINGIES OKKK???");
+    		throw new NullPointerException("Null pointer");
     	}
-    	else {
-    		return 1;
+    	
+    	catch (ClassCastException e) {
+    		System.out.println("Wrong casting");
+    		throw new ClassCastException("class casting");
     	}
+    	
 
     }
 
 
-    //main method for testing
+
+
+    public int get_decNum() {
+		return _decNum;
+	}
+
+
+	public void set_decNum(int _decNum) {
+		this._decNum = _decNum;
+	}
+
+
+	public String get_binNum() {
+		return _binNum;
+	}
+
+
+	public void set_binNum(String _binNum) {
+		this._binNum = _binNum;
+	}
+
+
+	//main method for testing
     public static void main( String[] args ) {
+    	
+    	Binary b = new Binary(0);
+    	Binary c = new Binary("11000");
+    	System.out.println(b.equals(c));
+    	System.out.println(decToBin(b._decNum));
+    	System.out.println(binToDec(b._binNum));
+    	System.out.println(b);
+    	System.out.println(c);
+    	
+    	
+    	Binary Bop = new Binary(3);
+    	Hexadecimal Hop = new Hexadecimal(3);
+    	Rational Pop = new Rational(4,1);
+    	System.out.println(Bop.compareTo(Pop));
+    	System.out.println(Bop.compareTo(Hop));
+
 
     }//end main()
 
